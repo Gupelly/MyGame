@@ -29,6 +29,8 @@ public class Character : MonoBehaviour
     void Update()
     {
         if (Input.GetButton("Horizontal")) Run();
+        // Прыжок пока не работает
+        // Если убрать из условия IsGround прыжок заработает, но персонаж сможет бесконечно отталкиваться от воздуха
         if (isGrounded && Input.GetButtonDown("Jump")) Jump();
     }
 
