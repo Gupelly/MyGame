@@ -2,10 +2,8 @@ using System.Collections;
 using UnityEngine;
 using System;
 
-public class Character : MonoBehaviour
+public class Character : Alive
 {
-    [SerializeField]
-    private int lifes = 3;
     [SerializeField]
     private float speed = 3.0f;
     [SerializeField]
@@ -48,6 +46,7 @@ public class Character : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
+        Lifes = 3;
     }
 
     private void FixedUpdate()
