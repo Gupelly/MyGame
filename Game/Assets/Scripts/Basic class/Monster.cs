@@ -6,9 +6,8 @@ public class Monster : Alive
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log(true);
         Alive unit = collision.GetComponent<Alive>();
         if (unit && unit is Character)
-            unit.GetDamage();
+            unit.ReceiveDamage();
     }
 }

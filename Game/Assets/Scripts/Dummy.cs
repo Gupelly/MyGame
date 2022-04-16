@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Dummy : Monster
 {
-    void Awake()
+    void Start()
     {
         Lifes = 1000;
     }
 
     void Update()
     {
-        
+
     }
 }

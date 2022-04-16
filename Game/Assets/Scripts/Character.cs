@@ -16,17 +16,18 @@ public class Character : Alive
     private float dashDuration = 0.1f;
     [SerializeField]
     private float dashCooldown = 1.5f;
+    [SerializeField]
+    private float attackRange = 0.5f;
+    [SerializeField]
+    private float attackCooldown = 0.5f;
 
     private bool unlockDash = false;
     private bool unlockDoubleJump = false;
 
     public LayerMask ground;
 
-    public Transform rightWallCheck;
-    private bool IsRightWall = false;
-
-    public Transform leftWallCheck;
-    private bool IsLeftWall = false;
+    public Transform WallCheck;
+    private bool IsWall = false;
 
     public Transform GroundCheck;
     private bool isGrounded = false;
@@ -34,11 +35,16 @@ public class Character : Alive
 
     private bool isDashing = false;
     private float currentdashDuration;
-    private bool lockDash = false;
+    private bool canNotDash = false;
     private bool jumpAfterDash = false;
+
+    public LayerMask monster;
+    public Transform AttackPos;
+    private bool canNotAttack = false;
 
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
+    private bool faceRight = true;
 
 
 
@@ -63,10 +69,10 @@ public class Character : Alive
         }
         else
         {
-            if (Input.GetButtonDown("Fire1") && !lockDash)
+            if (Input.GetButtonDown("Fire1") && !canNotDash)
             {
                 isDashing = true;
-                lockDash = true;
+                canNotDash = true;
                 Invoke("DashLock", dashCooldown);
                 currentdashDuration = dashDuration;
                 rb.velocity = Vector2.zero;
@@ -85,14 +91,15 @@ public class Character : Alive
                     isDoubleJump = false;
                 }
             }
+
+            if (Input.GetButton("Fire2") && !canNotAttack) Attack();
         }
     }
 
     private void CheckGround()
     {
         //Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.1F);
-        IsRightWall = Physics2D.OverlapCircle(rightWallCheck.position, 0.05F, ground);
-        IsLeftWall = Physics2D.OverlapCircle(leftWallCheck.position, 0.05F, ground);
+        IsWall = Physics2D.OverlapCircle(WallCheck.position, 0.05F, ground);
         isGrounded = Physics2D.OverlapCircle(GroundCheck.position, 0.3F, ground);
         if (isGrounded) isDoubleJump = true;
     }
@@ -100,10 +107,16 @@ public class Character : Alive
     private void Run()
     {
         Vector3 direction = transform.right * Input.GetAxis("Horizontal");
-        if (direction.x > 0 && IsRightWall || direction.x < 0 && IsLeftWall) direction.x = 0;
+        if (IsWall && transform.localScale.x * direction.x > 0) direction.x = 0;
         transform.position = Vector3.MoveTowards(transform.position, transform.position + direction, speed * Time.deltaTime);
         //transform.localScale *= new Vector2(Math.Sign(direction.x), 1);
-        sprite.flipX = direction.x < 0.0f;
+        //sprite.flipX = direction.x < 0.0f;
+
+        if ((direction.x < 0 && faceRight) || (direction.x > 0 && !faceRight))
+        {
+            faceRight = !faceRight;
+            transform.localScale *= new Vector2(-1, 1);
+        }
     }
 
     private void Jump(float jumpForce)
@@ -124,14 +137,33 @@ public class Character : Alive
         else
         {
             currentdashDuration -= Time.deltaTime;
-            if (!sprite.flipX) rb.velocity = Vector2.right * dashSpeed;
+            if (transform.localScale.x > 0) rb.velocity = Vector2.right * dashSpeed;
             else rb.velocity = Vector2.left * dashSpeed;
         }
     }
 
     private void DashLock()
     {
-        lockDash = false;
+        canNotDash = false;
     }
 
+    private void Attack()
+    {
+        canNotAttack = true;
+        Invoke("AttackLock", attackCooldown);
+        var enemies = Physics2D.OverlapCircleAll(AttackPos.position, attackRange, monster);
+        foreach (var enemy in enemies)
+            enemy.GetComponent<Monster>().ReceiveDamage();
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(AttackPos.position, attackRange);
+    }
+
+    private void AttackLock()
+    {
+        canNotAttack = false;
+    }
 }

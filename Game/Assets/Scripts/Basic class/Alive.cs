@@ -4,23 +4,22 @@ using UnityEngine;
 
 public class Alive : MonoBehaviour
 {
-    public static int Lifes;
-    public bool IsAlive = Lifes > 0;
+    public int Lifes;
 
-    public virtual void GetDamage()
+    public void ReceiveDamage(int damage = 1)
     {
-        Lifes--;
-        WhenGetdamage();
+        Lifes -= damage;
+        WhenReceiveDamage();
         if (Lifes == 0) Die();
     }
 
-    public virtual void Die()
+    public void Die()
     {
         Destroy(gameObject);
     }
 
-    public virtual void WhenGetdamage()
+    public virtual void WhenReceiveDamage()
     {
-
+        Debug.Log(Lifes);
     }
 }
