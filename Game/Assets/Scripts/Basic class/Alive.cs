@@ -10,7 +10,7 @@ public class Alive : MonoBehaviour
     {
         Lifes -= damage;
         WhenReceiveDamage();
-        if (Lifes == 0) Die();
+        if (Lifes <= 0) Die();
     }
 
     public void Die()

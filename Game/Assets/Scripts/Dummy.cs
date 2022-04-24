@@ -6,11 +6,11 @@ public class Dummy : Monster
 {
     void Start()
     {
-        Lifes = 1000;
+        Lifes = 3;
     }
 
     void Update()
     {
-
+  
     }
 }

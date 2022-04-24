@@ -42,8 +42,10 @@ public class Character : Alive
     public Transform AttackPos;
     private bool canNotAttack = false;
 
+    public LayerMask Bullet;
+
     private Rigidbody2D rb;
-    private SpriteRenderer sprite;
+    //private SpriteRenderer sprite;
     private bool faceRight = true;
 
 
@@ -51,7 +53,7 @@ public class Character : Alive
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        sprite = GetComponentInChildren<SpriteRenderer>();
+        //sprite = GetComponentInChildren<SpriteRenderer>();
         Lifes = 3;
     }
 
@@ -106,9 +108,9 @@ public class Character : Alive
 
     private void Run()
     {
-        Vector3 direction = transform.right * Input.GetAxis("Horizontal");
+        var direction = transform.right * Input.GetAxis("Horizontal");
         if (IsWall && transform.localScale.x * direction.x > 0) direction.x = 0;
-        transform.position = Vector3.MoveTowards(transform.position, transform.position + direction, speed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, transform.position + direction, speed * Time.deltaTime);
         //transform.localScale *= new Vector2(Math.Sign(direction.x), 1);
         //sprite.flipX = direction.x < 0.0f;
 
@@ -154,6 +156,13 @@ public class Character : Alive
         var enemies = Physics2D.OverlapCircleAll(AttackPos.position, attackRange, monster);
         foreach (var enemy in enemies)
             enemy.GetComponent<Monster>().ReceiveDamage();
+        //var enemy = Physics2D.OverlapCircle(AttackPos.position, attackRange, monster);
+        //enemy.GetComponent<Monster>().ReceiveDamage();
+        //var bullet = Physics2D.OverlapCircle(AttackPos.position, attackRange, Bullet);
+        //bullet.GetComponent<Bullet>().ReceiveDamage();
+        var bullets = Physics2D.OverlapCircleAll(AttackPos.position, attackRange, Bullet);
+        foreach (var bullet in bullets)
+            bullet.GetComponent<Bullet>().ReceiveDamage();
     }
 
     private void OnDrawGizmosSelected()
