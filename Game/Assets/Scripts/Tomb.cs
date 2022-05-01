@@ -21,6 +21,11 @@ public class Tomb : MonoBehaviour
         enemyRef = Resources.Load<MoveMonster>("MoveMonster");
     }
 
+    private void FixedUpdate()
+    {
+        if (spawnCount == 0) Destroy(gameObject);
+    }
+
     private void Update()
     {
         if (Physics2D.OverlapCircle(transform.position, radius, character) && !active)
@@ -35,7 +40,9 @@ public class Tomb : MonoBehaviour
         if (spawnCount > 0)
         {
             var newEnemy = Instantiate(enemyRef);
-            newEnemy.transform.position = transform.position;
+            newEnemy.transform.position = transform.position + new Vector3(0, 1.2f);
+            newEnemy.isReborn = true;
+            newEnemy.IsInvisable = true;
             spawnCount--;
             Invoke("Spawn", respawnTime);
         }

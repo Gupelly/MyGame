@@ -14,10 +14,14 @@ public class Bullet : Alive
     public LayerMask monster;
 
     private SpriteRenderer sprite;
+    private Animator anim;
+
+    private bool stop;
 
     private void Awake()
     {
         sprite = GetComponentInChildren<SpriteRenderer>();
+        anim = GetComponent<Animator>();
         Lifes = 2;
     }
 
@@ -28,24 +32,18 @@ public class Bullet : Alive
 
     private void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, transform.position + direction, speed * Time.deltaTime);
+        if (!stop) transform.position = Vector3.MoveTowards(transform.position, transform.position + direction, speed * Time.deltaTime);
         if (Physics2D.OverlapCircle(transform.position, 0.25f, ground)) Destroy(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Alive unit = collision.GetComponent<Alive>();
-        if (unit is Character && !isReflected)
+        if ((unit is Character && !isReflected) || (unit is Monster && isReflected))
         {
-            Debug.Log(true);
-            unit.ReceiveDamage();
-            Destroy(gameObject);
-        }
-        if (unit is Monster && isReflected)
-        {
-            Debug.Log(true);
-            unit.ReceiveDamage(2);
-            Destroy(gameObject);
+            unit.ReceiveDamage(unit is Monster ? 2 : 1);
+            stop = true;
+            anim.SetTrigger("Burst");
         }
     }
 
@@ -53,7 +51,6 @@ public class Bullet : Alive
     {
         isReflected = true;
         direction *= new Vector2(-1, 1);
-        sprite.color = Color.green;
     }
 
     private void Destroy()

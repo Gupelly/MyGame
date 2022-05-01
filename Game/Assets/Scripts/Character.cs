@@ -29,7 +29,6 @@ public class Character : Alive
     public Transform WallCheck;
     private bool IsWall = false;
 
-    public Transform GroundCheck;
     private bool isGrounded = false;
     private bool isDoubleJump = false;
 
@@ -45,15 +44,32 @@ public class Character : Alive
     public LayerMask Bullet;
 
     private Rigidbody2D rb;
-    //private SpriteRenderer sprite;
+    private SpriteRenderer sprite;
     private bool faceRight = true;
+    private Animator anim;
 
+    public enum CharState
+    {
+        Idle,
+        Run, 
+        Jump,
+        Fall,
+        Attack,
+        Dash,
+        Death
+    }
 
+    private CharState State
+    {
+        get { return (CharState) anim.GetInteger("State"); }
+        set { anim.SetInteger("State", (int)value); }
+    }
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        //sprite = GetComponentInChildren<SpriteRenderer>();
+        anim = GetComponent<Animator>();
+        sprite = GetComponentInChildren<SpriteRenderer>();
         Lifes = 3;
     }
 
@@ -67,14 +83,17 @@ public class Character : Alive
         if (isDashing)
         {
             Dash();
+            State = CharState.Dash;
             if (Input.GetButton("Jump")) jumpAfterDash = true;
         }
         else
         {
+            if (isGrounded && !Input.GetButton("Jump") && !canNotAttack) State = CharState.Idle;
             if (Input.GetButtonDown("Fire1") && !canNotDash)
             {
                 isDashing = true;
                 canNotDash = true;
+                IsInvisable = true;
                 Invoke("DashLock", dashCooldown);
                 currentdashDuration = dashDuration;
                 rb.velocity = Vector2.zero;
@@ -93,7 +112,6 @@ public class Character : Alive
                     isDoubleJump = false;
                 }
             }
-
             if (Input.GetButton("Fire2") && !canNotAttack) Attack();
         }
     }
@@ -102,8 +120,9 @@ public class Character : Alive
     {
         //Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.1F);
         IsWall = Physics2D.OverlapCircle(WallCheck.position, 0.05F, ground);
-        isGrounded = Physics2D.OverlapCircle(GroundCheck.position, 0.3F, ground);
+        isGrounded = Physics2D.OverlapCircle(transform.position, 0.4F, ground);
         if (isGrounded) isDoubleJump = true;
+        if (!isGrounded && State != CharState.Jump && !canNotAttack) State = CharState.Fall;
     }
 
     private void Run()
@@ -111,6 +130,7 @@ public class Character : Alive
         var direction = transform.right * Input.GetAxis("Horizontal");
         if (IsWall && transform.localScale.x * direction.x > 0) direction.x = 0;
         transform.position = Vector2.MoveTowards(transform.position, transform.position + direction, speed * Time.deltaTime);
+        if (direction.x != 0 && isGrounded && !Input.GetButton("Jump") && !canNotAttack) State = CharState.Run;
         //transform.localScale *= new Vector2(Math.Sign(direction.x), 1);
         //sprite.flipX = direction.x < 0.0f;
 
@@ -126,6 +146,7 @@ public class Character : Alive
         //rb.velocity = Vector2.zero;
         //rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        if (State != CharState.Attack) State = CharState.Jump;
     }
 
     private void Dash()
@@ -133,6 +154,8 @@ public class Character : Alive
         if (currentdashDuration <= 0)
         {
             isDashing = false;
+            IsInvisable = false;
+            State = CharState.Idle;
             rb.gravityScale = 2.8f;
             rb.velocity = Vector2.zero;
         }
@@ -151,8 +174,9 @@ public class Character : Alive
 
     private void Attack()
     {
+        State = CharState.Attack;
         canNotAttack = true;
-        Invoke("AttackLock", attackCooldown);
+        Invoke("AttackLock", attackCooldown);       
         var enemies = Physics2D.OverlapCircleAll(AttackPos.position, attackRange, monster);
         foreach (var enemy in enemies)
             enemy.GetComponent<Monster>().ReceiveDamage();
@@ -163,6 +187,7 @@ public class Character : Alive
         var bullets = Physics2D.OverlapCircleAll(AttackPos.position, attackRange, Bullet);
         foreach (var bullet in bullets)
             bullet.GetComponent<Bullet>().ReceiveDamage();
+        transform.position = new Vector2(rb.position.x -0.2f * transform.localScale.x, rb.position.y);
     }
 
     private void OnDrawGizmosSelected()
@@ -174,5 +199,28 @@ public class Character : Alive
     private void AttackLock()
     {
         canNotAttack = false;
+    }
+
+    public override void WhenReceiveDamage()
+    {
+        Debug.Log(Lifes);
+        rb.velocity = Vector2.zero;
+        IsInvisable = true;
+        Invoke("DisableInvisable", 0.45f);
+        rb.velocity = new Vector2(rb.velocity.x, 8f);
+        transform.position = new Vector2(rb.position.x - 1f * transform.localScale.x, rb.position.y);
+    }
+
+    private void DisableInvisable()
+    {
+        IsInvisable = false;
+    }
+
+    public override void Die()
+    {
+        anim.SetTrigger("Death");
+        anim.SetInteger("State", -1);
+        gameObject.layer = 0;
+        Destroy(this);
     }
 }
