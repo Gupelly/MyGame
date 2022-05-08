@@ -16,8 +16,6 @@ public class Bullet : Alive
     private SpriteRenderer sprite;
     private Animator anim;
 
-    private bool stop;
-
     private void Awake()
     {
         sprite = GetComponentInChildren<SpriteRenderer>();
@@ -32,7 +30,7 @@ public class Bullet : Alive
 
     private void Update()
     {
-        if (!stop) transform.position = Vector3.MoveTowards(transform.position, transform.position + direction, speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, transform.position + direction, speed * Time.deltaTime);
         if (Physics2D.OverlapCircle(transform.position, 0.25f, ground)) Destroy(gameObject);
     }
 
@@ -42,8 +40,10 @@ public class Bullet : Alive
         if ((unit is Character && !isReflected) || (unit is Monster && isReflected))
         {
             unit.ReceiveDamage(unit is Monster ? 2 : 1);
-            stop = true;
             anim.SetTrigger("Burst");
+            direction = Vector2.zero;
+            gameObject.layer = 0;
+            Destroy(this);
         }
     }
 

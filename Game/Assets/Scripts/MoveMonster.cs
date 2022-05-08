@@ -13,9 +13,6 @@ public class MoveMonster : Monster
     public Transform WallCheck;
     private bool IsWall;
 
-    public Transform ChasmCheck;
-    private bool IsChasm;
-
     public LayerMask Player;
     private Transform player;
     private bool chase = false;
@@ -72,7 +69,7 @@ public class MoveMonster : Monster
     private void Chase()
     {
         var distance = transform.position.x - player.position.x;
-        if (IsWall || IsChasm || Math.Abs(distance) < 0.05f)
+        if (IsWall || Math.Abs(distance) < 0.05f)
         {
             rb.velocity = Vector2.zero;
             State = MState.Idle;
@@ -88,7 +85,6 @@ public class MoveMonster : Monster
     private void CheckGround()
     {
         IsWall = Physics2D.OverlapCircle(WallCheck.position, 0.05F, ground);
-        IsChasm = !Physics2D.OverlapCircle(ChasmCheck.position, 0.1F, ground);
     }
 
     public void RebornFalse()

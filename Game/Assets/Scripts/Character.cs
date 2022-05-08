@@ -22,7 +22,7 @@ public class Character : Alive
     private float attackCooldown = 0.5f;
 
     private bool unlockDash = false;
-    private bool unlockDoubleJump = false;
+    public bool unlockDoubleJump = false;
 
     public LayerMask ground;
 
@@ -67,6 +67,7 @@ public class Character : Alive
 
     private void Awake()
     {
+        IsInvisable = true;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sprite = GetComponentInChildren<SpriteRenderer>();
@@ -94,7 +95,7 @@ public class Character : Alive
                 isDashing = true;
                 canNotDash = true;
                 IsInvisable = true;
-                Invoke("DashLock", dashCooldown);
+                Invoke(nameof(DashLock), dashCooldown);
                 currentdashDuration = dashDuration;
                 rb.velocity = Vector2.zero;
                 rb.gravityScale = 0;
@@ -106,7 +107,7 @@ public class Character : Alive
             {
                 jumpAfterDash = false;
                 if (isGrounded) Jump(jumpForce);
-                else if (isDoubleJump)
+                else if (isDoubleJump && unlockDoubleJump)
                 {
                     Jump(doubleJumpForce);
                     isDoubleJump = false;

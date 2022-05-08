@@ -13,33 +13,31 @@ public class Tomb : MonoBehaviour
 
     public LayerMask character;
     protected MoveMonster enemyRef;
+    private SpriteRenderer sprite;
 
     protected bool active = false;
 
     private void Awake()
     {
         enemyRef = Resources.Load<MoveMonster>("MoveMonster");
+        sprite = gameObject.GetComponentInChildren<SpriteRenderer>();
     }
 
     private void FixedUpdate()
     {
-        if (spawnCount == 0) Destroy(gameObject);
-    }
-
-    private void Update()
-    {
+        if (spawnCount == 0) Destroy(sprite);
         if (Physics2D.OverlapCircle(transform.position, radius, character) && !active)
         {
             Spawn();
             active = true;
-        } 
+        }
     }
 
     protected void Spawn()
     {
         if (spawnCount > 0)
         {
-            var newEnemy = Instantiate(enemyRef);
+            var newEnemy = Instantiate(enemyRef, gameObject.transform);
             newEnemy.transform.position = transform.position + new Vector3(0, 1.2f);
             newEnemy.isReborn = true;
             newEnemy.IsInvisable = true;

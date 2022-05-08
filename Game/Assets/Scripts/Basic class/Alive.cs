@@ -14,10 +14,6 @@ public class Alive : MonoBehaviour
         Lifes -= damage;
         WhenReceiveDamage();
         if (Lifes <= 0) Die();
-        //{
-        //    IsDead = true;
-        //    Invoke("Die", 2/3f);
-        //}
     }
 
     public virtual void Die()

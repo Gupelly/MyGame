@@ -11,6 +11,7 @@ public class ShootMonster : Monster
 
     private Animator anim;
 
+
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -18,16 +19,11 @@ public class ShootMonster : Monster
         InvokeRepeating("Shoot", rate, rate);
     }
 
-    private void Start()
-    {      
-        //InvokeRepeating("Shoot", rate, rate);
-    }
-
     private void Shoot()
     {
         var position = transform.position;
         position.y += 0.7f;
-        var newBullet = Instantiate(bulletRef, position, bulletRef.transform.rotation);
+        var newBullet = Instantiate(bulletRef, position, bulletRef.transform.rotation, gameObject.transform.parent);
         newBullet.Direction = -newBullet.transform.right * transform.localScale.x;
     }
 
