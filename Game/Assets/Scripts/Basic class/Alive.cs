@@ -10,10 +10,9 @@ public class Alive : MonoBehaviour
 
     public void ReceiveDamage(int damage = 1)
     {
-        if (IsInvisable) return;
-        Lifes -= damage;
-        WhenReceiveDamage();
+        if (!IsInvisable) Lifes -= damage;
         if (Lifes <= 0) Die();
+        WhenReceiveDamage();       
     }
 
     public virtual void Die()

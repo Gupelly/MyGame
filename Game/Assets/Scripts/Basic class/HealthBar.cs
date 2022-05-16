@@ -9,17 +9,23 @@ public class HealthBar : MonoBehaviour
 
     private void Awake()
     {
-        character = FindObjectOfType<Character>();
-        for (var i = 0; i < hearts.Length; i++)
-            hearts[i] = transform.GetChild(i);
+        Spawn();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         for (var i = 0; i < hearts.Length; i++)
         {
-            if (i < character.Lifes) hearts[i].gameObject.SetActive(true);
+            if (i < character?.Lifes) hearts[i].gameObject.SetActive(true);
             else hearts[i].gameObject.SetActive(false);
         }
+        if (character?.Lifes == 0) Invoke(nameof(Spawn), 2f);
+    }
+
+    private void Spawn()
+    {
+        character = FindObjectOfType<Character>();
+        for (var i = 0; i < hearts.Length; i++)
+            hearts[i] = transform.GetChild(i);
     }
 }

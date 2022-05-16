@@ -5,30 +5,29 @@ using System;
 public class Character : Alive
 {
     [SerializeField]
-    private float speed = 3.0f;
+    private float speed = 4.0f;
     [SerializeField]
-    private float jumpForce = 13.0f;
+    private float jumpForce = 14.0f;
     [SerializeField]
     private float doubleJumpForce = 10.0f;
     [SerializeField]
-    private float dashSpeed = 50f;
+    private float dashSpeed = 8f;
     [SerializeField]
-    private float dashDuration = 0.1f;
+    private float dashDuration = 0.5f;
     [SerializeField]
     private float dashCooldown = 1.5f;
     [SerializeField]
-    private float attackRange = 0.5f;
+    private float attackRange = 0.9f;
     [SerializeField]
     private float attackCooldown = 0.5f;
 
-    private bool unlockDash = false;
+    public bool unlockDash = false;
     public bool unlockDoubleJump = false;
 
     public LayerMask ground;
 
-    public Transform WallCheck;
+    public Transform Centre;
     private bool IsWall = false;
-
     private bool isGrounded = false;
     private bool isDoubleJump = false;
 
@@ -38,7 +37,6 @@ public class Character : Alive
     private bool jumpAfterDash = false;
 
     public LayerMask monster;
-    public Transform AttackPos;
     private bool canNotAttack = false;
 
     public LayerMask Bullet;
@@ -67,15 +65,21 @@ public class Character : Alive
 
     private void Awake()
     {
-        IsInvisable = true;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sprite = GetComponentInChildren<SpriteRenderer>();
+        Centre = GetComponentsInChildren<Transform>()[2];
+
+        ground = LayerMask.GetMask("Ground");
+        monster = LayerMask.GetMask("Monster");
+        Bullet = LayerMask.GetMask("Bullet");
         Lifes = 3;
     }
 
     private void FixedUpdate()
     {
+        if (IsInvisable && !isDashing) Blink();
+        else sprite.gameObject.SetActive(true);
         CheckGround();
     }
 
@@ -120,7 +124,7 @@ public class Character : Alive
     private void CheckGround()
     {
         //Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.1F);
-        IsWall = Physics2D.OverlapCircle(WallCheck.position, 0.05F, ground);
+        IsWall = Physics2D.OverlapCircle(Centre.position, 0.05F, ground);
         isGrounded = Physics2D.OverlapCircle(transform.position, 0.4F, ground);
         if (isGrounded) isDoubleJump = true;
         if (!isGrounded && State != CharState.Jump && !canNotAttack) State = CharState.Fall;
@@ -178,14 +182,14 @@ public class Character : Alive
         State = CharState.Attack;
         canNotAttack = true;
         Invoke("AttackLock", attackCooldown);       
-        var enemies = Physics2D.OverlapCircleAll(AttackPos.position, attackRange, monster);
+        var enemies = Physics2D.OverlapCircleAll(Centre.position, attackRange, monster);
         foreach (var enemy in enemies)
             enemy.GetComponent<Monster>().ReceiveDamage();
         //var enemy = Physics2D.OverlapCircle(AttackPos.position, attackRange, monster);
         //enemy.GetComponent<Monster>().ReceiveDamage();
         //var bullet = Physics2D.OverlapCircle(AttackPos.position, attackRange, Bullet);
         //bullet.GetComponent<Bullet>().ReceiveDamage();
-        var bullets = Physics2D.OverlapCircleAll(AttackPos.position, attackRange, Bullet);
+        var bullets = Physics2D.OverlapCircleAll(Centre.position, attackRange, Bullet);
         foreach (var bullet in bullets)
             bullet.GetComponent<Bullet>().ReceiveDamage();
         transform.position = new Vector2(rb.position.x -0.2f * transform.localScale.x, rb.position.y);
@@ -194,7 +198,7 @@ public class Character : Alive
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(AttackPos.position, attackRange);
+        Gizmos.DrawWireSphere(Centre.position, attackRange);
     }
 
     private void AttackLock()
@@ -204,17 +208,22 @@ public class Character : Alive
 
     public override void WhenReceiveDamage()
     {
-        Debug.Log(Lifes);
+        if (isDashing) return;
         rb.velocity = Vector2.zero;
         IsInvisable = true;
-        Invoke("DisableInvisable", 0.45f);
-        rb.velocity = new Vector2(rb.velocity.x, 8f);
-        transform.position = new Vector2(rb.position.x - 1f * transform.localScale.x, rb.position.y);
+        Invoke("DisableInvisable", 1f);
+        rb.velocity = new Vector2(rb.velocity.x, 6f);
+        transform.position = new Vector2(rb.position.x - 1.5f * transform.localScale.x, rb.position.y);
     }
 
     private void DisableInvisable()
     {
         IsInvisable = false;
+    }
+
+    private void Blink()
+    {
+        sprite.gameObject.SetActive(!sprite.gameObject.activeSelf);
     }
 
     public override void Die()

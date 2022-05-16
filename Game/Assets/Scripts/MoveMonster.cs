@@ -5,8 +5,7 @@ using System;
 
 public class MoveMonster : Monster
 {
-    [SerializeField]
-    private float agrDistance = 4.0f;
+    public float agrDistance = 4.0f;
 
     public LayerMask ground;
 
@@ -27,6 +26,7 @@ public class MoveMonster : Monster
         Idle,
         Run,
         Reborn,
+        Fall
     }
 
     private MState State
@@ -56,8 +56,9 @@ public class MoveMonster : Monster
 
     void Update()
     {
+        Fall();
         if (isReborn) State = MState.Reborn;
-        else if (player == null) rb.Sleep();
+        if (player == null) rb.Sleep();
         else if (player != null)
         {
             var distanceToPlayer = Vector2.Distance(transform.position, player.position);
@@ -72,12 +73,12 @@ public class MoveMonster : Monster
         if (IsWall || Math.Abs(distance) < 0.05f)
         {
             rb.velocity = Vector2.zero;
-            State = MState.Idle;
+            if (State != MState.Fall) State = MState.Idle;
         }
         else
         {
             rb.velocity = new Vector2(-Math.Sign(distance) * speed, 0);
-            State = MState.Run;
+            if (State != MState.Fall) State = MState.Run;
         }
         transform.localScale = new Vector2(Math.Sign(distance), 1);
     }
@@ -85,6 +86,21 @@ public class MoveMonster : Monster
     private void CheckGround()
     {
         IsWall = Physics2D.OverlapCircle(WallCheck.position, 0.05F, ground);
+    }
+
+    private void Fall()
+    {
+        if (Physics2D.OverlapCircle(transform.position, 0.2f, ground))
+        {
+            rb.bodyType = RigidbodyType2D.Kinematic;
+            State = MState.Idle;
+        }
+        else
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            rb.gravityScale = 30f;
+            State = MState.Fall;
+        }
     }
 
     public void RebornFalse()

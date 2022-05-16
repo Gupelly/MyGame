@@ -38,7 +38,7 @@ public class Tomb : MonoBehaviour
         if (spawnCount > 0)
         {
             var newEnemy = Instantiate(enemyRef, gameObject.transform);
-            newEnemy.transform.position = transform.position + new Vector3(0, 1.2f);
+            newEnemy.transform.position = transform.position;
             newEnemy.isReborn = true;
             newEnemy.IsInvisable = true;
             spawnCount--;

@@ -17,7 +17,7 @@ public class Monster : Alive
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Alive unit = collision.GetComponent<Alive>();
+        Alive unit = collision.GetComponent<Character>();
         if (unit is Character)
             unit.ReceiveDamage();
     }
