@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Wolf : Monster
 {
-    private GameObject player;
     public LayerMask ground;
 
     public float agrDistance = 4.0f;
@@ -85,15 +84,15 @@ public class Wolf : Monster
         canNotDash = false;
     }
 
-    private void Flip()
-    {
-        var distance = transform.position.x - player.transform.position.x;
-        transform.localScale = new Vector2(Math.Sign(distance), 1);
-    }
+    //private void Flip()
+    //{
+    //    var distance = transform.position.x - player.transform.position.x;
+    //    transform.localScale = new Vector2(Math.Sign(distance), 1);
+    //}
 
     private void Fall()
     {
-        if (Physics2D.OverlapCircle(transform.position, 0.1f, ground))
+        if (Physics2D.OverlapCircle(transform.position, 0.16f, ground))
         {
             rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.bodyType = RigidbodyType2D.Kinematic;
@@ -114,6 +113,7 @@ public class Wolf : Monster
     public override void Die()
     {
         anim.SetTrigger("Die");
+        rb.velocity = Vector2.zero;
         gameObject.layer = 0;
         Destroy(this);
     }

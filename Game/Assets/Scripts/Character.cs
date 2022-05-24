@@ -32,6 +32,8 @@ public class Character : Alive
     private bool isDoubleJump = false;
 
     private bool isDashing = false;
+    public bool isJumpBack;
+    public float jumpBackDirection = 1;
     private float currentdashDuration;
     private bool canNotDash = false;
     private bool jumpAfterDash = false;
@@ -41,7 +43,7 @@ public class Character : Alive
 
     public LayerMask Bullet;
 
-    private Rigidbody2D rb;
+    public Rigidbody2D rb;
     private SpriteRenderer sprite;
     private bool faceRight = true;
     private Animator anim;
@@ -54,7 +56,7 @@ public class Character : Alive
         Fall,
         Attack,
         Dash,
-        Death
+        JumpBack
     }
 
     private CharState State
@@ -85,7 +87,12 @@ public class Character : Alive
 
     void Update()
     {
-        if (isDashing)
+        if (isJumpBack)
+        {
+            JumpBack();
+            State = CharState.JumpBack;
+        }
+        else if (isDashing)
         {
             Dash();
             State = CharState.Dash;
@@ -192,7 +199,7 @@ public class Character : Alive
         var bullets = Physics2D.OverlapCircleAll(Centre.position, attackRange, Bullet);
         foreach (var bullet in bullets)
             bullet.GetComponent<Bullet>().ReceiveDamage();
-        transform.position = new Vector2(rb.position.x -0.2f * transform.localScale.x, rb.position.y);
+        //transform.position = new Vector2(rb.position.x -0.2f * transform.localScale.x, rb.position.y);
     }
 
     private void OnDrawGizmosSelected()
@@ -211,7 +218,7 @@ public class Character : Alive
         if (isDashing) return;
         rb.velocity = Vector2.zero;
         IsInvisable = true;
-        Invoke("DisableInvisable", 1f);
+        Invoke("DisableInvisable", 2f);
         rb.velocity = new Vector2(rb.velocity.x, 6f);
         transform.position = new Vector2(rb.position.x - 1.5f * transform.localScale.x, rb.position.y);
     }
@@ -232,5 +239,10 @@ public class Character : Alive
         anim.SetInteger("State", -1);
         gameObject.layer = 0;
         Destroy(this);
+    }
+
+    public void JumpBack()
+    {
+        rb.velocity = new Vector2(jumpBackDirection * 6, rb.velocity.y);
     }
 }

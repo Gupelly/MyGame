@@ -13,7 +13,8 @@ public class MoveMonster : Monster
     private bool IsWall;
 
     public LayerMask Player;
-    private Transform player;
+    private Transform playerPos;
+    public BoxCollider2D bc;
     private bool chase = false;
     public bool isReborn;
 
@@ -41,6 +42,7 @@ public class MoveMonster : Monster
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         Invoke("RebornFalse", 0.5f);
+        bc = GetComponent<BoxCollider2D>();
     }
 
     private void FixedUpdate()
@@ -49,7 +51,7 @@ public class MoveMonster : Monster
         if (Physics2D.OverlapCircle(transform.position, agrDistance, Player))
         {
             var newPlayer = Physics2D.OverlapCircle(transform.position, agrDistance, Player);
-            player = newPlayer.GetComponent<Character>().transform;
+            playerPos = newPlayer.GetComponent<Character>().transform;
         }
         CheckGround();
     }
@@ -58,10 +60,10 @@ public class MoveMonster : Monster
     {
         Fall();
         if (isReborn) State = MState.Reborn;
-        if (player == null) rb.Sleep();
-        else if (player != null)
+        if (playerPos == null) rb.Sleep();
+        else if (playerPos != null)
         {
-            var distanceToPlayer = Vector2.Distance(transform.position, player.position);
+            var distanceToPlayer = Vector2.Distance(transform.position, playerPos.position);
             if (distanceToPlayer <= agrDistance) chase = true;
             if (chase) Chase();
         }
@@ -69,7 +71,7 @@ public class MoveMonster : Monster
 
     private void Chase()
     {
-        var distance = transform.position.x - player.position.x;
+        var distance = transform.position.x - playerPos.position.x;
         if (IsWall || Math.Abs(distance) < 0.05f)
         {
             rb.velocity = Vector2.zero;
@@ -106,6 +108,7 @@ public class MoveMonster : Monster
     public void RebornFalse()
     {
         isReborn = false;
+        bc.enabled = true;
         IsInvisable = false;
         State = MState.Idle;
     }
@@ -116,6 +119,7 @@ public class MoveMonster : Monster
         anim.SetTrigger("Death");
         gameObject.layer = 0;
         rb.velocity = Vector2.zero;
+        transform.position = new Vector2(transform.position.x, transform.position.y - 0.1f);
         Destroy(this);
     }
 }

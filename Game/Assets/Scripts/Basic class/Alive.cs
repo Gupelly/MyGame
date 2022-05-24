@@ -10,7 +10,8 @@ public class Alive : MonoBehaviour
 
     public void ReceiveDamage(int damage = 1)
     {
-        if (!IsInvisable) Lifes -= damage;
+        if (IsInvisable) return;
+        Lifes -= damage;
         if (Lifes <= 0) Die();
         WhenReceiveDamage();       
     }

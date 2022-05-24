@@ -2582,7 +2582,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 1296
+        y: 1295
         width: 32
         height: 32
       alignment: 0
@@ -4240,8 +4240,8 @@ TextureImporter:
       name: main_lev_buildA_79
       rect:
         serializedVersion: 2
-        x: 0
-        y: 1200
+        x: 106
+        y: 1300
         width: 32
         height: 32
       alignment: 0
