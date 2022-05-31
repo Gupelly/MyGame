@@ -12,6 +12,7 @@ public class Alive : MonoBehaviour
     {
         if (IsInvisable) return;
         Lifes -= damage;
+        Effect();
         if (Lifes <= 0) Die();
         WhenReceiveDamage();       
     }
@@ -24,5 +25,10 @@ public class Alive : MonoBehaviour
     public virtual void WhenReceiveDamage()
     {
         Debug.Log(Lifes);
+    }
+
+    public virtual void Effect()
+    {
+
     }
 }

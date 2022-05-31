@@ -205,7 +205,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 126377613}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1865693634}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
+        m_MethodName: Quite
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &126377613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -421,6 +433,7 @@ GameObject:
   - component: {fileID: 1865693633}
   - component: {fileID: 1865693632}
   - component: {fileID: 1865693631}
+  - component: {fileID: 1865693634}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -445,8 +458,8 @@ Camera:
   m_GameObject: {fileID: 1865693630}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.735849, g: 0.17702027, b: 0.21355549, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.14417943, g: 0.18948083, b: 0.3773585, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -493,6 +506,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1865693634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1865693630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12cdd61f958decd4a85593ed26172019, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2109123375
 GameObject:
   m_ObjectHideFlags: 0
@@ -554,8 +579,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
+  m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -585,7 +610,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 0
   m_fontSizeMax: 0
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535

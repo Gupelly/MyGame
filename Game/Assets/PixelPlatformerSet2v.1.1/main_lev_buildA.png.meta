@@ -4767,7 +4767,7 @@ TextureImporter:
         serializedVersion: 2
         x: 160
         y: 1136
-        width: 32
+        width: 64
         height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -4891,9 +4891,9 @@ TextureImporter:
       name: main_lev_buildA_110
       rect:
         serializedVersion: 2
-        x: 416
+        x: 415
         y: 1136
-        width: 32
+        width: 14
         height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -4912,9 +4912,9 @@ TextureImporter:
       name: main_lev_buildA_111
       rect:
         serializedVersion: 2
-        x: 448
+        x: 432
         y: 1136
-        width: 32
+        width: 48
         height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -9133,8 +9133,8 @@ TextureImporter:
       name: main_lev_buildA_312
       rect:
         serializedVersion: 2
-        x: 800
-        y: 816
+        x: 816
+        y: 832
         width: 32
         height: 32
       alignment: 0
@@ -9154,8 +9154,8 @@ TextureImporter:
       name: main_lev_buildA_313
       rect:
         serializedVersion: 2
-        x: 832
-        y: 816
+        x: 848
+        y: 800
         width: 32
         height: 32
       alignment: 0
@@ -9364,8 +9364,8 @@ TextureImporter:
       name: main_lev_buildA_323
       rect:
         serializedVersion: 2
-        x: 1152
-        y: 816
+        x: 1168
+        y: 800
         width: 32
         height: 32
       alignment: 0
@@ -9406,8 +9406,8 @@ TextureImporter:
       name: main_lev_buildA_325
       rect:
         serializedVersion: 2
-        x: 1216
-        y: 816
+        x: 1200
+        y: 834
         width: 32
         height: 32
       alignment: 0
@@ -9469,8 +9469,8 @@ TextureImporter:
       name: main_lev_buildA_328
       rect:
         serializedVersion: 2
-        x: 1312
-        y: 816
+        x: 1296
+        y: 824
         width: 32
         height: 32
       alignment: 0
@@ -10855,7 +10855,7 @@ TextureImporter:
       name: main_lev_buildA_394
       rect:
         serializedVersion: 2
-        x: 896
+        x: 891
         y: 688
         width: 32
         height: 32

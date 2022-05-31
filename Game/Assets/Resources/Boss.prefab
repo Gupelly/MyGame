@@ -143,6 +143,7 @@ GameObject:
   - component: {fileID: 53135495907596761}
   - component: {fileID: 53135495907596760}
   - component: {fileID: 4813247411299799674}
+  - component: {fileID: 1874075153736054775}
   m_Layer: 11
   m_Name: Boss
   m_TagString: Respawn
@@ -260,12 +261,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6625f0b898087242b9e39fe43b005a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Lifes: 20
+  Lifes: 25
   IsInvisable: 0
   IsDead: 0
   player: {fileID: 0}
   speed: 0
   stanTime: 0
+  effect: {fileID: 5481173086627814697, guid: e89d0f1d266d6b94b91d5ede0666cc1a, type: 3}
   layer:
     serializedVersion: 2
     m_Bits: 8
@@ -277,3 +279,15 @@ MonoBehaviour:
   CantFlip: 0
   Agrdistance: 4
   AttackCooldown: 0
+--- !u!114 &1874075153736054775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 53135495907596767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebbc39fdefbcad342b8a8cbf877509f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

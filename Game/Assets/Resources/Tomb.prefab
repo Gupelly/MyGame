@@ -121,12 +121,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5393046839638259584}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3aa2ce1f2dc9bd844a4415b4e66e4995, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Radius: 10
+  Radius: 5
   spawnCount: 1
   respawnTime: 5
   character:

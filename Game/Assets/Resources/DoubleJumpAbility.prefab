@@ -91,8 +91,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8575247588123819935}
-  - component: {fileID: 8575247588123819933}
   - component: {fileID: 8575247588123819932}
+  - component: {fileID: -6847108126270921847}
   m_Layer: 0
   m_Name: DoubleJumpAbility
   m_TagString: Untagged
@@ -115,18 +115,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8575247588123819933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8575247588123819934}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e04a6b6ae6b98c4ba214b7ba4f8eac0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &8575247588123819932
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -153,3 +141,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.2254562, y: 1.2254586}
   m_EdgeRadius: 0
+--- !u!114 &-6847108126270921847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8575247588123819934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1315e08c3b1de049927b54f0348aed3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panel: {fileID: 0}

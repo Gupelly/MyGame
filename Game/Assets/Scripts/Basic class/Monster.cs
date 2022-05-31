@@ -10,10 +10,12 @@ public class Monster : Alive
     public float speed;
     private float constSpeed;
     public float stanTime;
+    public ParticleSystem effect;
 
     private void Start()
     {
         constSpeed = speed;
+        effect = Resources.Load<ParticleSystem>("Particle System");
     }
 
     //private void OnTriggerEnter2D(Collider2D collision)
@@ -45,5 +47,10 @@ public class Monster : Alive
     private void WakeUp()
     {
         speed = constSpeed;
+    }
+
+    public override void Effect()
+    {
+        Instantiate(effect, transform.position, Quaternion.identity);
     }
 }

@@ -1,0 +1,62 @@
+Guide
+
+Play : A
+Pause : B
+Setting : C
+Close/Cross/Cancel : D
+Pointy Finger : E
+Sign/Check : F
+Sound On : G 
+Sound Mode Vibration : H
+Sound Off : I 
+Eyes/Accessibility : J 
+Dustbin Closed/Delete1 : K
+Dustbin Open/Delete2 : L 
+Shot : M 
+Left : N
+Right : O
+Up : P
+Down : Q
+Copy : R
+Download/Save : S
+Reload : T
+Time : U 
+Bolts : V
+Menu  : W
+Setting2 : X
+Person : Y
+People : Z
+Zoom/Magnifier : a
+Left-Right Arrows : b
+Home : c
+Exclamation Mark : d
+Question Mark : e
+Shopping Cart/Shop : f
+Add Person : g
+Buildings : h
+Image : i
+Cube : j
+Hand : k
+Trophy : l
+Star : m
+Lock (Locked) : n
+Lock (Unlocked) : o
+Key : p
+Network (3) : "!" (Exclamation Point)
+Network (2) : " (Quotation Mark)
+Network (1) : ' (Apostrophe)
+Yes : "," (Comma)
+No : "." (Dot/Period)
+Infinity : 0
+Like : 1
+Dislike : 2
+Game Controller : 3
+Open : 4
+Exit : 5
+Square : 6
+Circle : 7
+Share : 8
+Sword : 9
+Camera : ":" (Colon)
+Mail : ";" (Semicolon)
+Leaderboard : "?" (Question Mark)
